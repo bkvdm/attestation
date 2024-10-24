@@ -1,6 +1,7 @@
 package com.gridnine.testing;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Класс полётов
@@ -24,5 +25,18 @@ public class Flight {
             result.append(segment.toString()).append("\n"); // Вызов toString() для каждого сегмента
         }
         return result.toString().trim(); // Чтобы убрать лишние пробелы в конце строки
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Flight flight = (Flight) obj;
+        return Objects.equals(segments, flight.segments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(segments);
     }
 }

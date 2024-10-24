@@ -2,7 +2,6 @@ package com.gridnine.testing;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Конструктор условий фильтров рейсов.
@@ -17,6 +16,7 @@ public class FlightFilterContext {
 
     /**
      * Добавляет новое правило фильтрации для исключения рейсов с вылетом в прошлом.
+     *
      * @param rule правило фильтрации, реализующее интерфейс ExcludeDeparturesInThePastRule
      */
     public void addPastRule(ExcludeDeparturesInThePast rule) {
@@ -25,6 +25,7 @@ public class FlightFilterContext {
 
     /**
      * Добавляет новое правило фильтрации для исключения рейсов, у которых прибытие происходит раньше вылета.
+     *
      * @param rule правило фильтрации, реализующее интерфейс ExcludeArrivalBeforeDepartureRule
      */
     public void addArrivalRule(ExcludeArrivalBeforeDeparture rule) {
@@ -33,6 +34,7 @@ public class FlightFilterContext {
 
     /**
      * Добавляет новое правило фильтрации для исключения рейсов с долгим ожиданием на земле.
+     *
      * @param rule правило фильтрации, реализующее интерфейс ExcludeLongGroundTimeRule
      */
     public void addGroundTimeRule(ExcludeLongGroundTime rule) {
@@ -41,6 +43,7 @@ public class FlightFilterContext {
 
     /**
      * Применяет все добавленные правила фильтрации для исключения рейсов с вылетом в прошлом.
+     *
      * @param flights список исходных рейсов для фильтрации
      * @return список рейсов после применения всех фильтров
      */
@@ -56,6 +59,7 @@ public class FlightFilterContext {
 
     /**
      * Применяет все добавленные правила фильтрации для исключения рейсов, у которых прибытие раньше вылета.
+     *
      * @param flights список исходных рейсов
      * @return список рейсов без тех, у которых прибытие раньше вылета
      */
@@ -70,22 +74,23 @@ public class FlightFilterContext {
     }
 
     /**
-     * Применяет все добавленные правила фильтрации для исключения рейсов с долгим ожиданием на земле.
+     * Применяет все добавленные правила фильтрации для исключения рейсов с ожиданием более 2 часов.
+     *
      * @param flights список исходных рейсов
-     * @param hoursGround максимально допустимое время ожидания между сегментами (в часах)
-     * @return список рейсов без тех, где время на земле превышает допустимое значение
+     * @return список рейсов без тех, где время на земле превышает два часа
      */
-    public List<Flight> filterLongGroundTime(List<Flight> flights, Optional<Byte> hoursGround) {
+    public List<Flight> filterLongGroundTime(List<Flight> flights) {
         List<Flight> filteredFlights = flights;
 
         for (ExcludeLongGroundTime rule : groundTimeRules) {
-            filteredFlights = rule.apply(filteredFlights, hoursGround); // Применение метода apply к списку рейсов
+            filteredFlights = rule.apply(filteredFlights); // Применение фильтра по умолчанию (2 часа)
         }
         return filteredFlights;
     }
 
     /**
      * Возвращает список всех рейсов без применения фильтров (если метод вызван напрямую).
+     *
      * @return список всех доступных рейсов
      */
     public List<Flight> getAllFlights() {

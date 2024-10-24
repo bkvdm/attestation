@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class ExcludeDeparturesInThePastTest {
 
@@ -29,8 +30,8 @@ class ExcludeDeparturesInThePastTest {
                 )),
                 // Рейс с вылетом в прошлом
                 new Flight(Arrays.asList(
-                        new Segment(LocalDateTime.now().minusHours(1), LocalDateTime.now().plusHours(1)),
-                        new Segment(LocalDateTime.now().plusHours(2), LocalDateTime.now().plusHours(3))
+                        new Segment(LocalDateTime.now().minusHours(2), LocalDateTime.now().plusHours(1)),
+                        new Segment(LocalDateTime.now().plusHours(3), LocalDateTime.now().plusHours(4))
                 )),
                 // Рейс с вылетами в прошлом
                 new Flight(Arrays.asList(
@@ -49,5 +50,9 @@ class ExcludeDeparturesInThePastTest {
 
         // Ожидание, что будет 2 рейса в списке рейсов после этой фильтрации
         assertEquals(2, filteredFlights.size(), "Количество рейсов после фильтрации должно быть 2");
+
+        // Проверяем, что исключены рейсы время вылета у которых в прошлом
+        assertFalse(filteredFlights.contains(flights.get(1)), "Рейс flight2 должен быть исключен.");
+        assertFalse(filteredFlights.contains(flights.get(2)), "Рейс flight3 должен быть исключен.");
     }
 }

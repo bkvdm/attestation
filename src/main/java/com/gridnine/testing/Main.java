@@ -75,48 +75,31 @@ public class Main {
                     break;
 
                 case 4:
-                    // Запрос времени ожидания у пользователя
-                    System.out.print("Введите время ожидания на земле (в часах), если нужно проигнорировать, тогда оставить пустым: ");
-                    String hoursGroundInput = scanner.nextLine();
-
-                    // Проверка, ввёл ли пользователь значение
-                    if (hoursGroundInput.isEmpty()) {
-                        hoursGroundOpt = Optional.empty(); // Игнорировать фильтр
-                    } else {
-                        hoursGroundOpt = Optional.of(Byte.parseByte(hoursGroundInput)); // Преобразование в Optional
-                    }
-
                     try {
-                        // Применение фильтра времени ожидания
-                        List<Flight> filteredByGroundTime = filterContext.filterLongGroundTime(filterContext.getAllFlights(), hoursGroundOpt);
-                        System.out.println("Отфильтрованные рейсы по времени ожидания:");
+                        // Применение фильтра времени ожидания (фиксировано 2 часа)
+                        List<Flight> filteredByGroundTime = filterContext.filterLongGroundTime(filterContext.getAllFlights());
+                        System.out.println("Отфильтрованные рейсы по времени ожидания (больше 2 часов):");
                         filteredByGroundTime.forEach(System.out::println); // Вывод каждого рейса на отдельной строке
                     } catch (IllegalArgumentException e) {
                         System.out.println(e.getMessage()); // Вывод сообщения об ошибке
                     }
                     break;
 
-
                 case 5:
                     List<Flight> flightsToFilter = filterContext.getAllFlights();
+
+                    // Применение фильтра по прошлым вылетам, если был выбран
                     flightsToFilter = filterContext.filterPastDepartures(flightsToFilter);
+
+                    // Применение фильтра по прибытиям раньше вылетов, если был выбран
                     flightsToFilter = filterContext.filterArrivalBeforeDeparture(flightsToFilter);
 
-                    // Запрос времени ожидания у пользователя
-                    System.out.print("Введите время ожидания на земле (в часах) или оставьте пустым для игнорирования: ");
-                    hoursGroundInput = scanner.nextLine();
+                    // Применение фильтра времени ожидания на земле (фиксировано 2 часа)
+                    flightsToFilter = filterContext.filterLongGroundTime(flightsToFilter);
 
-                    // Проверка, ввёл ли пользователь значение
-                    if (hoursGroundInput.isEmpty()) {
-                        hoursGroundOpt = Optional.empty(); // Игнорировать фильтр при соблюдении условия
-                    } else {
-                        hoursGroundOpt = Optional.of(Byte.parseByte(hoursGroundInput)); // Преобразование в Optional
-                    }
-
-                    // Применение всех фильтров
-                    flightsToFilter = filterContext.filterLongGroundTime(flightsToFilter, hoursGroundOpt);
+                    // Вывод отфильтрованных рейсов
                     System.out.println("Отфильтрованные рейсы:");
-                    flightsToFilter.forEach(System.out::println); // Вывод каждого рейса на отдельной строке
+                    flightsToFilter.forEach(System.out::println);
                     break;
 
                 case 0:

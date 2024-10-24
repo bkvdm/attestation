@@ -21,7 +21,7 @@ public class ExcludeDeparturesInThePast {
                             .allMatch(segment -> segment.getDepartureDate().isAfter(LocalDateTime.now()));
                 })
 
-                // Собираем отфильтрованные рейсы обратно в список
+                // Сборка отфильтрованных рейсов обратно в список
                 .collect(Collectors.toList());
     }
 }
