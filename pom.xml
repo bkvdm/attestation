@@ -15,8 +15,8 @@
         <junit.version>5.11.2</junit.version> <!-- Добавлено свойство для версии JUnit -->
     </properties>
 
-<!--        &lt;!&ndash; JUnit 5 dependency &ndash;&gt;-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine &ndash;&gt;-->
+    <!-- JUnit 5 dependency -->
+    <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
     <dependencies>
         <!-- JUnit 5 API dependency -->
         <dependency>
